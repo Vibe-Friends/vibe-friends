@@ -54,7 +54,7 @@ export const upcomingEvents: Event[] = [
   },
   {
     id: "event-002",
-    title: "1st Town Hall",
+    title: "Vibe Friends Town Hall",
     startDate: "2026-01-16",
     startTime: "11:00 AM PST",
     endTime: "11:45 AM PST",
