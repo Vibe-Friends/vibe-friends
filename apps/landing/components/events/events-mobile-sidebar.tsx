@@ -77,7 +77,7 @@ export function EventsMobileSidebar({
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
             role="dialog"
             aria-modal="true"
             aria-labelledby="sidebar-title"

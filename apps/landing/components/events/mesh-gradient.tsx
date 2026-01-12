@@ -65,7 +65,10 @@ export function MeshGradient({ seed, className = "" }: MeshGradientProps) {
   const theme = useMemo(() => getTheme(seed), [seed]);
   const hash = useMemo(() => hashSeed(seed), [seed]);
 
-  // Generate varied positions based on seed for organic feel
+  // Generate deterministic gradient positions using bit shifts to extract
+  // different parts of the hash. Each position varies within a quadrant:
+  // pos1: top-left (15-40%), pos2: top-right (55-80%)
+  // pos3: bottom-left (15-40%), pos4: bottom-right (55-80%)
   const pos1 = { x: (hash % 25) + 15, y: ((hash >> 4) % 25) + 15 };
   const pos2 = { x: ((hash >> 8) % 25) + 55, y: ((hash >> 12) % 25) + 15 };
   const pos3 = { x: ((hash >> 16) % 25) + 15, y: ((hash >> 20) % 25) + 55 };

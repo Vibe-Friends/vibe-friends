@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { MeshGradient } from "./mesh-gradient";
 import { getEventStatus } from "./events-data";
@@ -7,7 +8,6 @@ import type { Event, EventStatus } from "./events-data";
 
 interface EventCardProps {
   event: Event;
-  compact?: boolean;
 }
 
 function formatDate(startDate: string, endDate?: string): string {
@@ -49,8 +49,11 @@ function StatusTag({ status }: { status: EventStatus }) {
   );
 }
 
-export function EventCard({ event, compact = false }: EventCardProps) {
+export function EventCard({ event }: EventCardProps) {
   const status = getEventStatus(event);
+  const [imageError, setImageError] = useState(false);
+
+  const showImage = event.imageUrl && !imageError;
 
   return (
     <a
@@ -59,15 +62,7 @@ export function EventCard({ event, compact = false }: EventCardProps) {
       rel="noopener noreferrer"
       className="block group"
     >
-      <div
-        className={`
-          flex items-center gap-4
-          bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg
-          overflow-hidden transition-all duration-200
-          hover:border-white/40 hover:bg-black/50 hover:scale-[1.01]
-          ${compact ? "p-2.5" : "p-3"}
-        `}
-      >
+      <div className="flex items-center gap-4 bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg overflow-hidden transition-all duration-200 hover:border-white/40 hover:bg-black/50 hover:scale-[1.01] p-3">
         {/* Square Image Section */}
         <div className="relative shrink-0 w-28 h-28 rounded-lg overflow-hidden">
           {/* Always show gradient as placeholder/fallback */}
@@ -76,12 +71,13 @@ export function EventCard({ event, compact = false }: EventCardProps) {
           </div>
 
           {/* Image layers on top once loaded */}
-          {event.imageUrl && (
+          {showImage && (
             <Image
-              src={event.imageUrl}
+              src={event.imageUrl!}
               alt={event.title}
               fill
               className="object-cover z-10"
+              onError={() => setImageError(true)}
             />
           )}
 
@@ -93,22 +89,11 @@ export function EventCard({ event, compact = false }: EventCardProps) {
 
         {/* Content Section */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <h3
-            className={`
-              font-medium text-white truncate
-              group-hover:text-white/90 transition-colors
-              ${compact ? "text-base" : "text-lg"}
-            `}
-          >
+          <h3 className="font-medium text-white truncate group-hover:text-white/90 transition-colors text-lg">
             {event.title}
           </h3>
 
-          <div
-            className={`
-              mt-1.5 space-y-0.5
-              ${compact ? "text-sm" : "text-base"}
-            `}
-          >
+          <div className="mt-1.5 space-y-0.5 text-base">
             <p className="text-white/70 truncate">
               {formatDate(event.startDate, event.endDate)}
             </p>

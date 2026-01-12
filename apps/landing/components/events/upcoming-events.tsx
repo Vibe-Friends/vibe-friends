@@ -31,6 +31,7 @@ export function UpcomingEvents({
   };
 
   // Filter to only active events (upcoming or ongoing, not past)
+  // Empty deps is intentional: upcomingEvents is a module-level constant
   const activeEvents = useMemo(() => {
     return upcomingEvents.filter(isEventActive);
   }, []);

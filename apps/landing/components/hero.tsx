@@ -14,6 +14,16 @@ import Link from "next/link";
 import { UpcomingEvents } from "./events/upcoming-events";
 import { SocialLinks } from "./social-links";
 
+// Shared animation variant for staggered CTA fade-up effect
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
+
 export function Hero() {
   const [phase, setPhase] = useState<
     "black" | "border" | "image" | "text" | "button" | "events"
@@ -228,16 +238,7 @@ export function Hero() {
                     className="pt-2 space-y-2"
                   >
                     {/* Join Community Button */}
-                    <motion.div
-                      variants={{
-                        hidden: { opacity: 0, y: 8 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: { duration: 0.5, ease: "easeOut" },
-                        },
-                      }}
-                    >
+                    <motion.div variants={fadeUpVariant}>
                       <Link
                         href="https://t.me/+Fks4J_xdOtxmZTU0"
                         target="_blank"
@@ -251,16 +252,7 @@ export function Hero() {
                     </motion.div>
 
                     {/* View Events Button */}
-                    <motion.div
-                      variants={{
-                        hidden: { opacity: 0, y: 8 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          transition: { duration: 0.5, ease: "easeOut" },
-                        },
-                      }}
-                    >
+                    <motion.div variants={fadeUpVariant}>
                       <button
                         onClick={() => setEventsOpen(true)}
                         className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"

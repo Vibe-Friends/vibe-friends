@@ -13,11 +13,14 @@ export interface Event {
 export type EventStatus = "upcoming" | "ongoing";
 
 // Calculate event status based on current date
+// Note: Appending T00:00:00 ensures dates are parsed in local timezone, not UTC
 export function getEventStatus(event: Event): EventStatus {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const startDate = new Date(event.startDate);
-  const endDate = event.endDate ? new Date(event.endDate) : startDate;
+  const startDate = new Date(event.startDate + "T00:00:00");
+  const endDate = event.endDate
+    ? new Date(event.endDate + "T00:00:00")
+    : startDate;
 
   if (today < startDate) {
     return "upcoming";
@@ -35,8 +38,8 @@ export function isEventActive(event: Event): boolean {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const endDate = event.endDate
-    ? new Date(event.endDate)
-    : new Date(event.startDate);
+    ? new Date(event.endDate + "T00:00:00")
+    : new Date(event.startDate + "T00:00:00");
   return today <= endDate;
 }
 
