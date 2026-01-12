@@ -11,14 +11,27 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { TypewriterLine } from "./terminal-text";
 import Link from "next/link";
+import { UpcomingEvents } from "./events/upcoming-events";
+import { SocialLinks } from "./social-links";
+
+// Shared animation variant for staggered CTA fade-up effect
+const fadeUpVariant = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" as const },
+  },
+};
 
 export function Hero() {
   const [phase, setPhase] = useState<
-    "black" | "border" | "image" | "text" | "button"
+    "black" | "border" | "image" | "text" | "button" | "events"
   >("black");
   const [imageLoaded, setImageLoaded] = useState(false);
   const [titleComplete, setTitleComplete] = useState(false);
   const [taglineComplete, setTaglineComplete] = useState(false);
+  const [eventsOpen, setEventsOpen] = useState(false);
 
   // Parallax state - image follows cursor
   const containerRef = useRef<HTMLDivElement>(null);
@@ -71,14 +84,22 @@ export function Hero() {
 
   useEffect(() => {
     if (taglineComplete) {
-      const timeout = setTimeout(() => setPhase("button"), 300);
+      const timeout = setTimeout(() => setPhase("button"), 400);
       return () => clearTimeout(timeout);
     }
   }, [taglineComplete]);
 
+  // Transition to events phase after button
+  useEffect(() => {
+    if (phase === "button") {
+      const timeout = setTimeout(() => setPhase("events"), 800);
+      return () => clearTimeout(timeout);
+    }
+  }, [phase]);
+
   // Handle Enter key press to navigate
   useEffect(() => {
-    if (phase !== "button") return;
+    if (phase !== "button" && phase !== "events") return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -162,7 +183,10 @@ export function Hero() {
             initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
             animate={{
               backgroundColor:
-                phase === "image" || phase === "text" || phase === "button"
+                phase === "image" ||
+                phase === "text" ||
+                phase === "button" ||
+                phase === "events"
                   ? "rgba(0, 0, 0, 0.7)"
                   : "rgba(0, 0, 0, 0)",
             }}
@@ -173,10 +197,12 @@ export function Hero() {
             <div className="text-white space-y-4">
               {/* Title - terminal output */}
               <div className="text-2xl md:text-3xl font-light tracking-wide">
-                {(phase === "text" || phase === "button") && (
+                {(phase === "text" ||
+                  phase === "button" ||
+                  phase === "events") && (
                   <TypewriterLine
                     text="Welcome to Vibe Friends"
-                    typingSpeed={60}
+                    typingSpeed={40}
                     delay={0}
                     onComplete={() => setTitleComplete(true)}
                   />
@@ -188,7 +214,7 @@ export function Hero() {
                 {titleComplete && (
                   <TypewriterLine
                     text="We are a community of AI and vibe coding enthusiasts. Share your builds, learnings, participate in events and have fun."
-                    typingSpeed={25}
+                    typingSpeed={18}
                     delay={300}
                     onComplete={() => setTaglineComplete(true)}
                   />
@@ -197,25 +223,47 @@ export function Hero() {
 
               {/* Command prompt - input area */}
               <AnimatePresence>
-                {phase === "button" && (
+                {(phase === "button" || phase === "events") && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="pt-2"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.35,
+                        },
+                      },
+                    }}
+                    className="pt-2 space-y-2"
                   >
-                    <button className="group flex items-center gap-3 text-white font-mono text-xl md:text-2xl tracking-wider hover:text-white/80 transition-colors duration-200">
-                      <span className="text-white/60">&gt;</span>
-                      <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
-                        <Link
-                          href="https://t.me/+Fks4J_xdOtxmZTU0"
-                          target="_blank"
-                        >
-                          Enter
-                        </Link>
-                      </span>
-                      <span className="w-3 h-6 bg-white/80 animate-pulse" />
-                    </button>
+                    {/* Join Community Button */}
+                    <motion.div variants={fadeUpVariant}>
+                      <Link
+                        href="https://t.me/+Fks4J_xdOtxmZTU0"
+                        target="_blank"
+                        className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                      >
+                        <span className="text-white/60">&gt;</span>
+                        <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
+                          Join Our Community
+                        </span>
+                      </Link>
+                    </motion.div>
+
+                    {/* View Events Button */}
+                    <motion.div variants={fadeUpVariant}>
+                      <button
+                        onClick={() => setEventsOpen(true)}
+                        className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                      >
+                        <span className="text-white/60">&gt;</span>
+                        <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
+                          View Community Events
+                        </span>
+                        <span className="w-2.5 h-5 bg-white/80 animate-pulse" />
+                      </button>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -223,6 +271,16 @@ export function Hero() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Upcoming Events */}
+      <UpcomingEvents
+        isVisible={phase === "events"}
+        externalOpen={eventsOpen}
+        onExternalClose={() => setEventsOpen(false)}
+      />
+
+      {/* Social Links */}
+      <SocialLinks isVisible={phase === "events"} />
     </div>
   );
 }

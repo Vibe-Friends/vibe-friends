@@ -28,3 +28,17 @@ body {
   color: var(--color-foreground);
   font-family: system-ui, sans-serif;
 }
+
+/* Mesh gradient animation for event cards */
+@keyframes mesh-flow {
+  0%,
+  100% {
+    transform: translate(0%, 0%) scale(1);
+  }
+  33% {
+    transform: translate(2%, -2%) scale(1.02);
+  }
+  66% {
+    transform: translate(-2%, 2%) scale(0.98);
+  }
+}
