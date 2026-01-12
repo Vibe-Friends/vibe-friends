@@ -27,10 +27,10 @@ export function EventsMobileTrigger({
             hover:text-white/80 hover:border-white/40 hover:bg-black/60
             transition-colors duration-200
           "
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           aria-label={`View ${eventCount} upcoming events`}
         >
           <Calendar className="w-4 h-4 md:w-5 md:h-5" />

@@ -12,6 +12,7 @@ import Image from "next/image";
 import { TypewriterLine } from "./terminal-text";
 import Link from "next/link";
 import { UpcomingEvents } from "./events/upcoming-events";
+import { SocialLinks } from "./social-links";
 
 export function Hero() {
   const [phase, setPhase] = useState<
@@ -186,7 +187,9 @@ export function Hero() {
             <div className="text-white space-y-4">
               {/* Title - terminal output */}
               <div className="text-2xl md:text-3xl font-light tracking-wide">
-                {(phase === "text" || phase === "button" || phase === "events") && (
+                {(phase === "text" ||
+                  phase === "button" ||
+                  phase === "events") && (
                   <TypewriterLine
                     text="Welcome to Vibe Friends"
                     typingSpeed={40}
@@ -212,34 +215,63 @@ export function Hero() {
               <AnimatePresence>
                 {(phase === "button" || phase === "events") && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.35,
+                        },
+                      },
+                    }}
                     className="pt-2 space-y-2"
                   >
                     {/* Join Community Button */}
-                    <Link
-                      href="https://t.me/+Fks4J_xdOtxmZTU0"
-                      target="_blank"
-                      className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.5, ease: "easeOut" },
+                        },
+                      }}
                     >
-                      <span className="text-white/60">&gt;</span>
-                      <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
-                        Join our Community
-                      </span>
-                    </Link>
+                      <Link
+                        href="https://t.me/+Fks4J_xdOtxmZTU0"
+                        target="_blank"
+                        className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                      >
+                        <span className="text-white/60">&gt;</span>
+                        <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
+                          Join Our Community
+                        </span>
+                      </Link>
+                    </motion.div>
 
                     {/* View Events Button */}
-                    <button
-                      onClick={() => setEventsOpen(true)}
-                      className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                    <motion.div
+                      variants={{
+                        hidden: { opacity: 0, y: 8 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.5, ease: "easeOut" },
+                        },
+                      }}
                     >
-                      <span className="text-white/60">&gt;</span>
-                      <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
-                        View Community Events
-                      </span>
-                      <span className="w-2.5 h-5 bg-white/80 animate-pulse" />
-                    </button>
+                      <button
+                        onClick={() => setEventsOpen(true)}
+                        className="group flex items-center gap-3 text-white font-mono text-lg md:text-xl tracking-wider hover:text-white/80 transition-colors duration-200"
+                      >
+                        <span className="text-white/60">&gt;</span>
+                        <span className="border-b border-white/40 group-hover:border-white/70 transition-colors">
+                          View Community Events
+                        </span>
+                        <span className="w-2.5 h-5 bg-white/80 animate-pulse" />
+                      </button>
+                    </motion.div>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -254,6 +286,9 @@ export function Hero() {
         externalOpen={eventsOpen}
         onExternalClose={() => setEventsOpen(false)}
       />
+
+      {/* Social Links */}
+      <SocialLinks isVisible={phase === "events"} />
     </div>
   );
 }
