@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
+import { checkAdminAndSendMagicLink } from "./actions";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -19,19 +19,17 @@ function LoginForm() {
     setLoading(true);
     setMessage(null);
 
-    const supabase = createClient();
-
-    const { error } = await supabase.auth.signInWithOtp({
+    const result = await checkAdminAndSendMagicLink(
       email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+      `${window.location.origin}/auth/callback`
+    );
 
     setLoading(false);
 
-    if (error) {
-      setMessage({ type: "error", text: error.message });
+    if (result.error === "not_admin") {
+      setMessage({ type: "error", text: "This email is not an admin" });
+    } else if (result.error) {
+      setMessage({ type: "error", text: result.error });
     } else {
       setMessage({
         type: "success",
