@@ -13,6 +13,7 @@ import { TypewriterLine } from "./terminal-text";
 import Link from "next/link";
 import { UpcomingEvents } from "./events/upcoming-events";
 import { SocialLinks } from "./social-links";
+import type { Event } from "./events/events-data";
 
 // Shared animation variant for staggered CTA fade-up effect
 const fadeUpVariant = {
@@ -24,7 +25,11 @@ const fadeUpVariant = {
   },
 };
 
-export function Hero() {
+interface HeroProps {
+  events: Event[];
+}
+
+export function Hero({ events }: HeroProps) {
   const [phase, setPhase] = useState<
     "black" | "border" | "image" | "text" | "button" | "events"
   >("black");
@@ -274,6 +279,7 @@ export function Hero() {
 
       {/* Upcoming Events */}
       <UpcomingEvents
+        events={events}
         isVisible={phase === "events"}
         externalOpen={eventsOpen}
         onExternalClose={() => setEventsOpen(false)}
