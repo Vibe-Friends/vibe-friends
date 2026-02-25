@@ -1,3 +1,13 @@
+// SUPABASE DISABLED — uncomment original code below to re-enable
+
+import { redirect } from "next/navigation";
+
+export default function EditEventPage() {
+  redirect("/admin/events");
+}
+
+/*
+// --- ORIGINAL CODE ---
 import { createClient } from "@/lib/supabase/server";
 import { EventForm } from "@/components/admin/event-form";
 import { notFound } from "next/navigation";
@@ -30,3 +40,4 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
     </div>
   );
 }
+*/

@@ -1,3 +1,23 @@
+// SUPABASE DISABLED — uncomment original code below to re-enable
+
+export default function AdminLoginPage() {
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg p-8 text-center">
+        <h1 className="text-2xl font-mono tracking-wider text-white mb-4">
+          Admin Disabled
+        </h1>
+        <p className="text-white/50 text-sm font-mono">
+          Supabase is currently disabled. Re-enable to access the admin
+          dashboard.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/*
+// --- ORIGINAL CODE ---
 "use client";
 
 import { useState, Suspense } from "react";
@@ -124,3 +144,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+*/
