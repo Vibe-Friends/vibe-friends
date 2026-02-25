@@ -12,7 +12,7 @@ export default function AuthCallbackPage() {
 
     // Handle the auth callback - Supabase client automatically
     // picks up tokens from URL hash for magic links
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((event: string, session: any) => {
       if (event === "SIGNED_IN" && session) {
         router.push("/admin/events");
       } else if (event === "SIGNED_OUT" || !session) {
