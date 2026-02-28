@@ -1,3 +1,15 @@
+// SUPABASE DISABLED — uncomment original code below to re-enable
+
+export default function EventsPage() {
+  return (
+    <div className="text-white/40 text-center py-12 font-mono">
+      Admin dashboard disabled — Supabase is offline.
+    </div>
+  );
+}
+
+/*
+// --- ORIGINAL CODE ---
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { Plus } from "lucide-react";
@@ -9,7 +21,6 @@ export const dynamic = "force-dynamic";
 export default async function EventsPage() {
   const supabase = await createClient();
 
-  // Fetch all events including soft-deleted (admins can see everything)
   const { data: events, error } = await supabase
     .from("events")
     .select("*")
@@ -38,3 +49,4 @@ export default async function EventsPage() {
     </div>
   );
 }
+*/

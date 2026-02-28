@@ -1,3 +1,13 @@
+// SUPABASE DISABLED — uncomment original code below to re-enable
+
+import { type NextRequest, NextResponse } from "next/server";
+
+export async function updateSession(request: NextRequest) {
+  return NextResponse.next({ request });
+}
+
+/*
+// --- ORIGINAL CODE ---
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
@@ -65,3 +75,4 @@ export async function updateSession(request: NextRequest) {
 
   return supabaseResponse;
 }
+*/

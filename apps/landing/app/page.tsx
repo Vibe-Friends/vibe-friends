@@ -1,12 +1,15 @@
 import { Hero } from "@/components/hero";
-import { createClient } from "@/lib/supabase/server";
-import type { Event } from "@/components/events/events-data";
-import type { Event as DbEvent } from "@/lib/database.types";
 
-// Prevent static generation - page needs Supabase at runtime
-export const dynamic = "force-dynamic";
+// SUPABASE DISABLED — uncomment to re-enable events fetch
+// import { createClient } from "@/lib/supabase/server";
+// import type { Event as DbEvent } from "@/lib/database.types";
+// export const dynamic = "force-dynamic";
+
+import type { Event } from "@/components/events/events-data";
 
 export default async function Home() {
+  // SUPABASE DISABLED — uncomment to re-enable events fetch
+  /*
   const supabase = await createClient();
 
   const { data: dbEvents } = await supabase
@@ -15,7 +18,6 @@ export default async function Home() {
     .is("deleted_at", null)
     .order("start_date", { ascending: true });
 
-  // Map database events to Event interface
   const events: Event[] = ((dbEvents ?? []) as DbEvent[]).map((e) => ({
     id: e.id,
     title: e.title,
@@ -27,6 +29,9 @@ export default async function Home() {
     url: e.url,
     imageUrl: e.image_url ?? undefined,
   }));
+  */
+
+  const events: Event[] = [];
 
   return <Hero events={events} />;
 }
